@@ -17,20 +17,38 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             YourdayTheme {
-                val yourDays = generateYourDayList(8)
+                val yourDaysDefault = generateYourDayList(4)
+                val (yourDays, setYourDays) = remember {
+                    mutableStateOf<List<YourDay>>(
+                        yourDaysDefault
+                    )
+                }
                 val (yourDay, setYourDay) = remember { mutableStateOf<YourDay?>(null) }
-                val (screenState, setScreenState) = remember { mutableStateOf<ScreenState>(ScreenState.LIST_YOUR_DAYS) }
+                val (screenState, setScreenState) = remember {
+                    mutableStateOf<ScreenState>(
+                        ScreenState.LIST_YOUR_DAYS
+                    )
+                }
 
                 if (screenState == ScreenState.LIST_YOUR_DAYS) {
-                    YourDaysList(setYourDay = setYourDay, setScreenState = setScreenState, yourDays = yourDays)
+                    YourDaysList(
+                        setYourDay = setYourDay,
+                        setScreenState = setScreenState,
+                        yourDays = yourDays
+                    )
                 }
 
                 if (screenState == ScreenState.DETAILS_YOUR_DAY) {
-                    YourDayDetails(setYourDay = setYourDay, setScreenState = setScreenState, yourDays = yourDays, yourDay = yourDay)
+                    YourDayDetails(
+                        setYourDay = setYourDay,
+                        setScreenState = setScreenState,
+                        yourDays = yourDays,
+                        yourDay = yourDay
+                    )
                 }
 
                 if (screenState == ScreenState.ADD_YOUR_DAY) {
-                    YourDayAdd(setYourDay = setYourDay, setScreenState = setScreenState, yourDays = yourDays)
+                    YourDayAdd(setYourDay = setYourDay, setScreenState = setScreenState, setYourDays = setYourDays)
                 }
             }
         }
