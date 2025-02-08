@@ -45,12 +45,15 @@ fun YourDayAdd(
             onNumberSelected = setStressRating,
             text = "Stress"
         )
-        Box( modifier = Modifier.padding(16.dp)) {
-            CheckboxMinimalExample(
+        Row ( modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+            CheckboxWithText(
                 isChecked = leftComfortZone,
                 setIsChecked = setLeftComfortZone,
                 text = "Left Comfort Zone"
             )
+            DateDialog()
         }
         Row(
             modifier = Modifier
