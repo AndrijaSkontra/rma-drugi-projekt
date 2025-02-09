@@ -59,8 +59,8 @@ fun YourDaysList(
             ) {
                 Column(modifier = Modifier.padding(10.dp)) {
                     Text(
-                        yourDay.date.toString(),
-                        fontWeight = FontWeight.Bold,
+                        formatDate(yourDay.date),
+                        fontWeight = FontWeight.W200,
                     )
                     HorizontalDivider()
                     Row(

@@ -42,9 +42,7 @@ class MainActivity : ComponentActivity() {
                     }
                     ScreenState.DETAILS_YOUR_DAY -> {
                         YourDayDetails(
-                            setYourDay = { yourDay = it },
                             setScreenState = { screenState = it },
-                            yourDays = yourDays,
                             yourDay = yourDay
                         )
                     }
