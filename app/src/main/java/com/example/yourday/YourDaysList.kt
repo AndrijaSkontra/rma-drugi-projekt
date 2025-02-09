@@ -45,7 +45,6 @@ fun YourDaysList(
             .wrapContentSize(Alignment.Center)
             .padding(bottom = 70.dp)
     ) {
-        Text("Your Days", fontWeight = FontWeight.Bold, fontSize = 30.sp)
         yourDays.forEach { yourDay ->
             val emptyStarsAmount = ALL_STARS_AMOUNT - yourDay.overallDayRating
             ElevatedCard(

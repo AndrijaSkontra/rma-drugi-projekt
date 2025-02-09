@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -36,6 +38,8 @@ fun YourDayAdd(
     setYourDay: (YourDay?) -> Unit,
     setScreenState: (ScreenState) -> Unit,
     setYourDays: (List<YourDay>) -> Unit,
+    scope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
 ) {
     val (productivityRating, setProductivityRating) = remember { mutableStateOf<Int>(0) }
     val (stressRating, setStressRating) = remember { mutableStateOf<Int>(0) }
@@ -150,7 +154,9 @@ fun YourDayAdd(
                     }
                     setScreenState(ScreenState.LIST_YOUR_DAYS)
                 } else {
-                    println("Wrong data input")
+                    scope.launch {
+                        snackbarHostState.showSnackbar(message = "Productivity, Stress and Rating required.")
+                    }
                 }
             }) { Text(text = "Add Day") }
         }
