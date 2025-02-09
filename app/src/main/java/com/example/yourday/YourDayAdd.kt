@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +30,7 @@ fun YourDayAdd(
     val (productivityRating, setProductivityRating) = remember { mutableStateOf<Int>(1) }
     val (stressRating, setStressRating) = remember { mutableStateOf<Int>(1) }
     val (leftComfortZone, setLeftComfortZone) = remember { mutableStateOf<Boolean>(false) }
+    val (noteOfTheDay, setNoteOfTheDay) = remember { mutableStateOf<String>("") }
 
     Column(
         modifier = Modifier
@@ -54,6 +56,29 @@ fun YourDayAdd(
                 text = "Left Comfort Zone"
             )
             DateDialog()
+        }
+        Box ( modifier = Modifier.padding(16.dp).fillMaxWidth() ) {
+            TextField(
+                value = noteOfTheDay,
+                onValueChange = { setNoteOfTheDay(it) },
+                label = { Text("Note for the day") }, // Placeholder
+                modifier = Modifier.fillMaxWidth()
+            )
+
+        }
+        Box ( modifier = Modifier.padding(16.dp).fillMaxWidth(), contentAlignment = Alignment.Center
+        ) {
+            StarRating()
+        }
+        Box(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            CameraIcon { selectedImageUri ->
+                println(selectedImageUri)
+            }
         }
         Row(
             modifier = Modifier
