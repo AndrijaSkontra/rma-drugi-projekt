@@ -15,17 +15,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -36,6 +42,11 @@ fun YourDayDetails(
     setScreenState: (ScreenState) -> Unit,
     yourDay: YourDay?
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val database = remember { YourDayDatabase.getDatabase(context) }
+    val yourDayDao = database.yourDayDao()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,6 +150,20 @@ fun YourDayDetails(
             ) {
                 OutlinedButton(onClick = { setScreenState(ScreenState.LIST_YOUR_DAYS) }) {
                     Text(text = "Back")
+                }
+                FilledTonalButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            yourDayDao.delete(yourDay)
+                            setScreenState(ScreenState.LIST_YOUR_DAYS)
+                        }
+                    }, colors = ButtonColors(
+                        containerColor = Color(0xFFF1333B), contentColor = Color.White,
+                        disabledContainerColor = Color.Gray,
+                        disabledContentColor = Color.LightGray,
+                    )
+                ) {
+                    Text("Delete")
                 }
                 Button(onClick = { println("update todo") }) {
                     Text(text = "Update")
