@@ -3,13 +3,16 @@ package com.example.yourday
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -20,8 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -52,9 +58,7 @@ fun YourDayAdd(
             text = "Productivity"
         )
         NumberPickSlider(
-            selectedNumber = stressRating,
-            onNumberSelected = setStressRating,
-            text = "Stress"
+            selectedNumber = stressRating, onNumberSelected = setStressRating, text = "Stress"
         )
         Row(
             modifier = Modifier
@@ -68,8 +72,7 @@ fun YourDayAdd(
                 text = "Left Comfort Zone"
             )
             DateDialog(
-                selectedDate = selectedDate,
-                onDateSelected = setSelectedDate
+                selectedDate = selectedDate, onDateSelected = setSelectedDate
             )
         }
         Box(
@@ -91,23 +94,37 @@ fun YourDayAdd(
                 .fillMaxWidth(), contentAlignment = Alignment.Center
         ) {
             StarRating(
-                rating = starRating,
-                onRatingChange = setStarRating
+                rating = starRating, onRatingChange = setStarRating
             )
         }
         Box(
             modifier = Modifier
                 .padding(16.dp)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
+                .fillMaxWidth(), contentAlignment = Alignment.Center
         ) {
             CameraIcon { selectedImageUri ->
-                println(selectedImageUri)
+                setImageUri(selectedImageUri)
+            }
+        }
+        if (imageUri != null) {
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                AsyncImage(
+                    model = imageUri,
+                    contentDescription = "Image of the day",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, Color(0xFF9C27B0), CircleShape)
+                )
             }
         }
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
         ) {
             OutlinedButton(onClick = {
