@@ -6,8 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import com.example.yourday.ui.theme.YourdayTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,41 +21,42 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             YourdayTheme {
-                val yourDaysDefault = generateYourDayList(4)
-                val (yourDays, setYourDays) = remember {
-                    mutableStateOf<List<YourDay>>(
-                        yourDaysDefault
-                    )
-                }
-                val (yourDay, setYourDay) = remember { mutableStateOf<YourDay?>(null) }
-                val (screenState, setScreenState) = remember {
-                    mutableStateOf<ScreenState>(
-                        ScreenState.LIST_YOUR_DAYS
-                    )
+                val context = LocalContext.current
+                var yourDays by remember { mutableStateOf<List<YourDay>>(emptyList()) }
+                var yourDay by remember { mutableStateOf<YourDay?>(null) }
+                var screenState by remember { mutableStateOf(ScreenState.LIST_YOUR_DAYS) }
+
+                LaunchedEffect(screenState) {
+                    if (screenState == ScreenState.LIST_YOUR_DAYS) {
+                        yourDays = generateYourDayList(context)
+                    }
                 }
 
-                if (screenState == ScreenState.LIST_YOUR_DAYS) {
-                    YourDaysList(
-                        setYourDay = setYourDay,
-                        setScreenState = setScreenState,
-                        yourDays = yourDays
-                    )
-                }
-
-                if (screenState == ScreenState.DETAILS_YOUR_DAY) {
-                    YourDayDetails(
-                        setYourDay = setYourDay,
-                        setScreenState = setScreenState,
-                        yourDays = yourDays,
-                        yourDay = yourDay
-                    )
-                }
-
-                if (screenState == ScreenState.ADD_YOUR_DAY) {
-                    YourDayAdd(setYourDay = setYourDay, setScreenState = setScreenState, setYourDays = setYourDays)
+                when (screenState) {
+                    ScreenState.LIST_YOUR_DAYS -> {
+                        YourDaysList(
+                            setYourDay = { yourDay = it },
+                            setScreenState = { screenState = it },
+                            yourDays = yourDays
+                        )
+                    }
+                    ScreenState.DETAILS_YOUR_DAY -> {
+                        YourDayDetails(
+                            setYourDay = { yourDay = it },
+                            setScreenState = { screenState = it },
+                            yourDays = yourDays,
+                            yourDay = yourDay
+                        )
+                    }
+                    ScreenState.ADD_YOUR_DAY -> {
+                        YourDayAdd(
+                            setYourDay = { yourDay = it },
+                            setScreenState = { screenState = it },
+                            setYourDays = { yourDays = it }
+                        )
+                    }
                 }
             }
         }
     }
 }
-

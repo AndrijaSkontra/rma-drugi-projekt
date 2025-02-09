@@ -17,9 +17,12 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -32,10 +35,11 @@ fun YourDayAdd(
     val (stressRating, setStressRating) = remember { mutableStateOf<Int>(0) }
     val (leftComfortZone, setLeftComfortZone) = remember { mutableStateOf<Boolean>(false) }
     val (noteOfTheDay, setNoteOfTheDay) = remember { mutableStateOf<String>("") }
-    val (selectedDate, setSelectedDate) = remember { mutableStateOf<Long?>(null) }
+    val (selectedDate, setSelectedDate) = remember { mutableStateOf<Long?>(System.currentTimeMillis()) }
     val (starRating, setStarRating) = remember { mutableStateOf(0) }
     val (imageUri, setImageUri) = remember { mutableStateOf<Uri?>(null) }
-
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -68,9 +72,11 @@ fun YourDayAdd(
                 onDateSelected = setSelectedDate
             )
         }
-        Box(modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
             TextField(
                 value = noteOfTheDay,
                 onValueChange = { setNoteOfTheDay(it) },
@@ -108,16 +114,23 @@ fun YourDayAdd(
                 setScreenState(ScreenState.LIST_YOUR_DAYS)
             }) { Text(text = "Back") }
             Button(onClick = {
-                println("Productivity Rating: $productivityRating")
-                println("Stress Rating: $stressRating")
-                println("Left Comfort Zone: $leftComfortZone")
-                println("Note of the Day: $noteOfTheDay")
-                println("Selected Date: ${selectedDate?.let { formatDate(it) } ?: "None"}")
-                println("Star Rating: $starRating")
-                println("Image URI: $imageUri")
                 var validInformation =
                     productivityRating != 0 && stressRating != 0 && selectedDate != null && starRating != 0
                 if (validInformation) {
+                    val newYourDay = YourDay(
+                        productivity = productivityRating,
+                        stress = stressRating,
+                        leftComfortZone = leftComfortZone,
+                        note = noteOfTheDay,
+                        overallDayRating = starRating,
+                        pictureUrl = imageUri,
+                        date = selectedDate ?: 0L
+                    )
+                    val database = YourDayDatabase.getDatabase(context)
+                    coroutineScope.launch {
+                        database.yourDayDao().insert(newYourDay)
+                        println("Success adding your day")
+                    }
                     setScreenState(ScreenState.LIST_YOUR_DAYS)
                 } else {
                     println("Wrong data input")
