@@ -53,6 +53,13 @@ class MainActivity : ComponentActivity() {
                             setYourDays = { yourDays = it }
                         )
                     }
+
+                    ScreenState.UPDATE_YOUR_DAY -> {
+                        YourDayUpdate(
+                            setScreenState = { screenState = it },
+                            yourDay = yourDay
+                        )
+                    }
                 }
             }
         }

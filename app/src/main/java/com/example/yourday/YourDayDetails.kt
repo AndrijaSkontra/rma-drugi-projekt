@@ -165,7 +165,9 @@ fun YourDayDetails(
                 ) {
                     Text("Delete")
                 }
-                Button(onClick = { println("update todo") }) {
+                Button(onClick = {
+                    setScreenState(ScreenState.UPDATE_YOUR_DAY)
+                }) {
                     Text(text = "Update")
                 }
             }
