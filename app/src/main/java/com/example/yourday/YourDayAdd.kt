@@ -1,5 +1,6 @@
 package com.example.yourday
 
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -27,10 +28,14 @@ fun YourDayAdd(
     setScreenState: (ScreenState) -> Unit,
     setYourDays: (List<YourDay>) -> Unit,
 ) {
-    val (productivityRating, setProductivityRating) = remember { mutableStateOf<Int>(1) }
-    val (stressRating, setStressRating) = remember { mutableStateOf<Int>(1) }
+    val (productivityRating, setProductivityRating) = remember { mutableStateOf<Int>(0) }
+    val (stressRating, setStressRating) = remember { mutableStateOf<Int>(0) }
     val (leftComfortZone, setLeftComfortZone) = remember { mutableStateOf<Boolean>(false) }
     val (noteOfTheDay, setNoteOfTheDay) = remember { mutableStateOf<String>("") }
+    val (selectedDate, setSelectedDate) = remember { mutableStateOf<Long?>(null) }
+    val (starRating, setStarRating) = remember { mutableStateOf(0) }
+    val (imageUri, setImageUri) = remember { mutableStateOf<Uri?>(null) }
+
 
     Column(
         modifier = Modifier
@@ -47,17 +52,25 @@ fun YourDayAdd(
             onNumberSelected = setStressRating,
             text = "Stress"
         )
-        Row ( modifier = Modifier.padding(16.dp).fillMaxWidth(),
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+        ) {
             CheckboxWithText(
                 isChecked = leftComfortZone,
                 setIsChecked = setLeftComfortZone,
                 text = "Left Comfort Zone"
             )
-            DateDialog()
+            DateDialog(
+                selectedDate = selectedDate,
+                onDateSelected = setSelectedDate
+            )
         }
-        Box ( modifier = Modifier.padding(16.dp).fillMaxWidth() ) {
+        Box(modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()) {
             TextField(
                 value = noteOfTheDay,
                 onValueChange = { setNoteOfTheDay(it) },
@@ -66,9 +79,15 @@ fun YourDayAdd(
             )
 
         }
-        Box ( modifier = Modifier.padding(16.dp).fillMaxWidth(), contentAlignment = Alignment.Center
+        Box(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(), contentAlignment = Alignment.Center
         ) {
-            StarRating()
+            StarRating(
+                rating = starRating,
+                onRatingChange = setStarRating
+            )
         }
         Box(
             modifier = Modifier
@@ -89,7 +108,20 @@ fun YourDayAdd(
                 setScreenState(ScreenState.LIST_YOUR_DAYS)
             }) { Text(text = "Back") }
             Button(onClick = {
-                setScreenState(ScreenState.LIST_YOUR_DAYS)
+                println("Productivity Rating: $productivityRating")
+                println("Stress Rating: $stressRating")
+                println("Left Comfort Zone: $leftComfortZone")
+                println("Note of the Day: $noteOfTheDay")
+                println("Selected Date: ${selectedDate?.let { formatDate(it) } ?: "None"}")
+                println("Star Rating: $starRating")
+                println("Image URI: $imageUri")
+                var validInformation =
+                    productivityRating != 0 && stressRating != 0 && selectedDate != null && starRating != 0
+                if (validInformation) {
+                    setScreenState(ScreenState.LIST_YOUR_DAYS)
+                } else {
+                    println("Wrong data input")
+                }
             }) { Text(text = "Add Day") }
         }
 

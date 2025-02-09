@@ -70,7 +70,6 @@ fun NumberPickSlider(
 
 @Composable
 fun CheckboxWithText(isChecked: Boolean, setIsChecked: (Boolean) -> Unit, text: String) {
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -112,32 +111,33 @@ fun DatePickerModal(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateDialog() {
-    val (showDialog, setShowDialog) = remember { mutableStateOf<Boolean>(false) }
-    val (selectedDate, setSelectedDate) = remember { mutableStateOf<Long?>(null) }
-
+fun DateDialog(
+    selectedDate: Long?,
+    onDateSelected: (Long?) -> Unit
+) {
+    var showDialog by remember { mutableStateOf(false) }
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        IconButton(onClick = { setShowDialog(true) }) {
+        IconButton(onClick = { showDialog = true }) {
             Icon(
                 imageVector = Icons.Default.DateRange,
                 contentDescription = "Open Date Picker",
                 modifier = Modifier.size(30.dp)
             )
         }
-        Text("${selectedDate?.let { formatDate(it) } ?: ""}", fontWeight = FontWeight.W100)
-
-        if (showDialog) {
-            DatePickerModal(
-                onDateSelected = { date ->
-                    setSelectedDate(date)
-                    setShowDialog(false)
-                },
-                onDismiss = { setShowDialog(false) }  // Close dialog when dismissed
-            )
-        }
+        Text(text = selectedDate?.let { formatDate(it) } ?: "", fontWeight = FontWeight.W100)
+    }
+    if (showDialog) {
+        DatePickerModal(
+            onDateSelected = { date ->
+                onDateSelected(date)
+                showDialog = false
+            },
+            onDismiss = { showDialog = false }
+        )
     }
 }
 
@@ -181,20 +181,15 @@ fun NumberInputField() {
     }
 }
 
-
 @Composable
 fun StarRating(
     modifier: Modifier = Modifier,
     totalStars: Int = 10,
-    initialRating: Int = 0
+    rating: Int,
+    onRatingChange: (Int) -> Unit
 ) {
-    // Holds the current rating value
-    var rating by remember { mutableStateOf(initialRating) }
-
     Row(modifier = modifier) {
-        // Loop through each star position (1 through totalStars)
         for (i in 1..totalStars) {
-            // Determine the star image based on whether its position is <= rating
             val starIcon = if (i <= rating) {
                 R.drawable.baseline_star_24       // Replace with your "filled" star drawable
             } else {
@@ -206,7 +201,7 @@ fun StarRating(
                 contentDescription = if (i <= rating) "Filled Star" else "Empty Star",
                 modifier = Modifier
                     .size(32.dp)
-                    .clickable { rating = i } // When clicked, set the rating to the star's position
+                    .clickable { onRatingChange(i) }
             )
         }
     }
@@ -223,10 +218,10 @@ fun CameraIcon(
         onImagePicked(uri)
     }
 
-
-    Row ( modifier = Modifier.clickable { launcher.launch("image/*") }) {
+    Row(modifier = Modifier.clickable { launcher.launch("image/*") }) {
         Text(
-            "Picture of the day", fontWeight = FontWeight.W100,
+            "Picture of the day",
+            fontWeight = FontWeight.W100,
             modifier = Modifier.padding(end = 8.dp)
         )
         Image(
