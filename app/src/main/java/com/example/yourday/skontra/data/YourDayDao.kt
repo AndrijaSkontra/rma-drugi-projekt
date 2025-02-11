@@ -1,4 +1,4 @@
-package com.example.yourday
+package com.example.yourday.skontra.data
 
 import androidx.room.Dao
 import androidx.room.Delete

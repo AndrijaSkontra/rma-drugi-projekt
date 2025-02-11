@@ -1,4 +1,4 @@
-package com.example.yourday.ui.theme
+package com.example.yourday.skontra.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.example.yourday
+package com.example.yourday.skontra.ui
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -39,6 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.yourday.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

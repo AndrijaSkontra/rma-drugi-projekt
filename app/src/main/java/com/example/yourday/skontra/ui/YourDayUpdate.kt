@@ -1,4 +1,4 @@
-package com.example.yourday
+package com.example.yourday.skontra.ui
 
 import android.net.Uri
 import android.os.Build
@@ -30,6 +30,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.yourday.skontra.data.YourDay
+import com.example.yourday.skontra.data.YourDayDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

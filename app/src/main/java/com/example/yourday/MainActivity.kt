@@ -9,11 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
@@ -30,10 +26,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import com.example.yourday.ui.theme.YourdayTheme
-import kotlinx.coroutines.launch
+import com.example.yourday.skontra.data.YourDay
+import com.example.yourday.skontra.data.YourDaysRepository
+import com.example.yourday.skontra.ui.ScreenState
+import com.example.yourday.skontra.ui.YourDayAdd
+import com.example.yourday.skontra.ui.YourDayDetails
+import com.example.yourday.skontra.ui.YourDayUpdate
+import com.example.yourday.skontra.ui.YourDaysList
+import com.example.yourday.skontra.ui.theme.YourdayTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var repository: YourDaysRepository
+
     @SuppressLint("RememberReturnType")
     @OptIn(ExperimentalMaterial3Api::class)
     @RequiresApi(Build.VERSION_CODES.O)
@@ -51,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
                 LaunchedEffect(screenState) {
                     if (screenState == ScreenState.LIST_YOUR_DAYS) {
-                        yourDays = generateYourDayList(context)
+                        yourDays = repository.getAllDays(context)
                     }
                 }
 
@@ -82,12 +91,14 @@ class MainActivity : ComponentActivity() {
                                     yourDays = yourDays,
                                 )
                             }
+
                             ScreenState.DETAILS_YOUR_DAY -> {
                                 YourDayDetails(
                                     setScreenState = { screenState = it },
                                     yourDay = yourDay
                                 )
                             }
+
                             ScreenState.ADD_YOUR_DAY -> {
                                 YourDayAdd(
                                     setYourDay = { yourDay = it },
@@ -97,6 +108,7 @@ class MainActivity : ComponentActivity() {
                                     snackbarHostState = snackbarHostState,
                                 )
                             }
+
                             ScreenState.UPDATE_YOUR_DAY -> {
                                 YourDayUpdate(
                                     setScreenState = { screenState = it },

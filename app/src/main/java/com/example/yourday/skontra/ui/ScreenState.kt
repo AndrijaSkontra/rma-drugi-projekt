@@ -1,4 +1,4 @@
-package com.example.yourday
+package com.example.yourday.skontra.ui
 
 enum class ScreenState {
     ADD_YOUR_DAY,
