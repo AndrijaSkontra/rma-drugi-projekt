@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.yourday.R
 import com.example.yourday.skontra.data.YourDay
-import com.example.yourday.skontra.data.YourDayDatabase
 import com.example.yourday.skontra.domain.DeleteYourDayUseCase
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -49,8 +48,6 @@ fun YourDayDetails(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val database = remember { YourDayDatabase.getDatabase(context) }
-    val yourDayDao = database.yourDayDao()
 
     Column(
         modifier = Modifier
@@ -66,7 +63,6 @@ fun YourDayDetails(
             )
             Spacer(modifier = Modifier.padding(8.dp))
 
-            // Display properties of YourDay
             Text(text = "ID: ${day.id}")
             Text(text = "Productivity: ${day.productivity}")
             Text(text = "Stress: ${day.stress}")

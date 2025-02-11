@@ -30,6 +30,7 @@ import com.example.yourday.skontra.data.YourDay
 import com.example.yourday.skontra.data.YourDaysRepository
 import com.example.yourday.skontra.domain.AddYourDayUseCase
 import com.example.yourday.skontra.domain.DeleteYourDayUseCase
+import com.example.yourday.skontra.domain.UpdateYourDayUseCase
 import com.example.yourday.skontra.ui.ScreenState
 import com.example.yourday.skontra.ui.YourDayAdd
 import com.example.yourday.skontra.ui.YourDayDetails
@@ -50,6 +51,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var deleteYourDayUseCase: DeleteYourDayUseCase
+
+    @Inject
+    lateinit var updateYourDayUseCase: UpdateYourDayUseCase
 
     @SuppressLint("RememberReturnType")
     @OptIn(ExperimentalMaterial3Api::class)
@@ -125,6 +129,7 @@ class MainActivity : ComponentActivity() {
                                     yourDay = yourDay,
                                     scope = scope,
                                     snackbarHostState = snackbarHostState,
+                                    updateYourDayUseCase = updateYourDayUseCase,
                                 )
                             }
                         }

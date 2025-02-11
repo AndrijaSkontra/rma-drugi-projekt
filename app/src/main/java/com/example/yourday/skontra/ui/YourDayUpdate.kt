@@ -31,7 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.yourday.skontra.data.YourDay
-import com.example.yourday.skontra.data.YourDayDatabase
+import com.example.yourday.skontra.domain.UpdateYourDayUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -41,7 +41,8 @@ fun YourDayUpdate(
     setScreenState: (ScreenState) -> Unit,
     yourDay: YourDay?,
     scope: CoroutineScope,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    updateYourDayUseCase: UpdateYourDayUseCase
 ) {
     val (productivityRating, setProductivityRating) =
         remember { mutableStateOf(yourDay?.productivity ?: 0) }
@@ -182,9 +183,7 @@ fun YourDayUpdate(
                                 pictureUrl = imageUri,
                                 date = selectedDate ?: System.currentTimeMillis()
                             )
-                            val database = YourDayDatabase.getDatabase(context)
-                            database.yourDayDao().update(updatedYourDay)
-
+                            updateYourDayUseCase.update(context, updatedYourDay)
                             setScreenState(ScreenState.LIST_YOUR_DAYS)
                         } else {
                             scope.launch {
