@@ -27,9 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import com.example.yourday.skontra.data.YourDay
-import com.example.yourday.skontra.data.YourDaysRepository
 import com.example.yourday.skontra.domain.AddYourDayUseCase
 import com.example.yourday.skontra.domain.DeleteYourDayUseCase
+import com.example.yourday.skontra.domain.GetAllYourDayUseCase
 import com.example.yourday.skontra.domain.UpdateYourDayUseCase
 import com.example.yourday.skontra.ui.ScreenState
 import com.example.yourday.skontra.ui.YourDayAdd
@@ -44,9 +44,6 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var repository: YourDaysRepository
-
-    @Inject
     lateinit var addYourDayUseCase: AddYourDayUseCase
 
     @Inject
@@ -54,6 +51,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var updateYourDayUseCase: UpdateYourDayUseCase
+
+    @Inject
+    lateinit var getAllYourDayUseCase: GetAllYourDayUseCase
 
     @SuppressLint("RememberReturnType")
     @OptIn(ExperimentalMaterial3Api::class)
@@ -72,7 +72,7 @@ class MainActivity : ComponentActivity() {
 
                 LaunchedEffect(screenState) {
                     if (screenState == ScreenState.LIST_YOUR_DAYS) {
-                        yourDays = repository.getAllDays(context)
+                        yourDays = getAllYourDayUseCase.getAll(context)
                     }
                 }
 
