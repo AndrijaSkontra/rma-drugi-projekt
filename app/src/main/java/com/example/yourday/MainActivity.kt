@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import com.example.yourday.skontra.data.YourDay
 import com.example.yourday.skontra.data.YourDaysRepository
+import com.example.yourday.skontra.domain.AddYourDayUseCase
 import com.example.yourday.skontra.ui.ScreenState
 import com.example.yourday.skontra.ui.YourDayAdd
 import com.example.yourday.skontra.ui.YourDayDetails
@@ -42,6 +43,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var repository: YourDaysRepository
+
+    @Inject
+    lateinit var addYourDayUseCase: AddYourDayUseCase
 
     @SuppressLint("RememberReturnType")
     @OptIn(ExperimentalMaterial3Api::class)
@@ -106,6 +110,7 @@ class MainActivity : ComponentActivity() {
                                     setYourDays = { yourDays = it },
                                     scope = scope,
                                     snackbarHostState = snackbarHostState,
+                                    addYourDayUseCase = addYourDayUseCase,
                                 )
                             }
 

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.yourday.skontra.data.YourDay
 import com.example.yourday.skontra.data.YourDayDatabase
+import com.example.yourday.skontra.domain.AddYourDayUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -42,6 +43,7 @@ fun YourDayAdd(
     setYourDays: (List<YourDay>) -> Unit,
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
+    addYourDayUseCase: AddYourDayUseCase,
 ) {
     val (productivityRating, setProductivityRating) = remember { mutableStateOf<Int>(0) }
     val (stressRating, setStressRating) = remember { mutableStateOf<Int>(0) }
@@ -149,10 +151,8 @@ fun YourDayAdd(
                         pictureUrl = imageUri,
                         date = selectedDate ?: 0L
                     )
-                    val database = YourDayDatabase.getDatabase(context)
                     coroutineScope.launch {
-                        database.yourDayDao().insert(newYourDay)
-                        println("Success adding your day")
+                        addYourDayUseCase.add(context, newYourDay)
                     }
                     setScreenState(ScreenState.LIST_YOUR_DAYS)
                 } else {
