@@ -16,4 +16,9 @@ class YourDaysRepository @Inject constructor() {
         val database = YourDayDatabase.getDatabase(context.applicationContext)
         return database.yourDayDao().insert(newYourDay)
     }
+
+    suspend fun deleteYourDay(context: Context, yourDay: YourDay) {
+        val database = YourDayDatabase.getDatabase(context.applicationContext)
+        return database.yourDayDao().delete(yourDay)
+    }
 }

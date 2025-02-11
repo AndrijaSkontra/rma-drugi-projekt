@@ -34,6 +34,7 @@ import coil.compose.AsyncImage
 import com.example.yourday.R
 import com.example.yourday.skontra.data.YourDay
 import com.example.yourday.skontra.data.YourDayDatabase
+import com.example.yourday.skontra.domain.DeleteYourDayUseCase
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -43,7 +44,8 @@ import java.util.Locale
 @Composable
 fun YourDayDetails(
     setScreenState: (ScreenState) -> Unit,
-    yourDay: YourDay?
+    yourDay: YourDay?,
+    deleteYourDayUseCase: DeleteYourDayUseCase
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -56,11 +58,8 @@ fun YourDayDetails(
             .statusBarsPadding()
             .padding(16.dp),
     ) {
-        // Top row with Back and Update buttons
-
 
         yourDay?.let { day ->
-            // Header title
             Text(
                 text = "Your Day Details",
                 style = MaterialTheme.typography.titleLarge
@@ -75,7 +74,6 @@ fun YourDayDetails(
                 Text(text = "Note: ${day.note}")
             }
 
-            // Format and display the date
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val formattedDate = dateFormat.format(Date(day.date))
             Text(text = "Date: $formattedDate")
@@ -102,13 +100,11 @@ fun YourDayDetails(
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            // Display Overall Day Rating using stars
             Text(text = "Overall Day Rating:")
             Row(
                 modifier = Modifier.padding(top = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Draw full stars
                 for (i in 1..day.overallDayRating) {
                     Image(
                         painter = painterResource(id = R.drawable.baseline_star_24),
@@ -116,7 +112,6 @@ fun YourDayDetails(
                         modifier = Modifier.size(24.dp)
                     )
                 }
-                // Calculate and draw empty stars (assume maximum 10 stars)
                 val maxStars = 10
                 val emptyStarsAmount = maxStars - day.overallDayRating
                 for (i in 1..emptyStarsAmount) {
@@ -135,12 +130,12 @@ fun YourDayDetails(
                     contentAlignment = Alignment.Center
                 ) {
                     AsyncImage(
-                        model = yourDay.pictureUrl, // Your image URL
+                        model = yourDay.pictureUrl,
                         contentDescription = "Image of the day",
                         modifier = Modifier
-                            .size(100.dp)                    // Set the size of the image
-                            .clip(CircleShape)               // Clip the image to a circle
-                            .border(2.dp, Color(0xFF9C27B0), CircleShape) // Add a 2dp purple border
+                            .size(100.dp)
+                            .clip(CircleShape)
+                            .border(2.dp, Color(0xFF9C27B0), CircleShape)
 
                     )
                 }
@@ -157,7 +152,7 @@ fun YourDayDetails(
                 FilledTonalButton(
                     onClick = {
                         coroutineScope.launch {
-                            yourDayDao.delete(yourDay)
+                            deleteYourDayUseCase.delete(context, yourDay)
                             setScreenState(ScreenState.LIST_YOUR_DAYS)
                         }
                     }, colors = ButtonColors(
@@ -175,7 +170,6 @@ fun YourDayDetails(
                 }
             }
         } ?: run {
-            // Fallback for null yourDay
             Text(text = "No data available")
         }
     }
