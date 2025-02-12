@@ -1,4 +1,4 @@
-package com.example.yourday.skontra.data
+package skontra.data
 
 import android.net.Uri
 import androidx.room.Entity

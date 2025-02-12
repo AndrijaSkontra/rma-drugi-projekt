@@ -1,4 +1,4 @@
-package com.example.yourday.skontra.ui
+package skontra.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -27,7 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.yourday.R
-import com.example.yourday.skontra.data.YourDay
+import skontra.data.YourDay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

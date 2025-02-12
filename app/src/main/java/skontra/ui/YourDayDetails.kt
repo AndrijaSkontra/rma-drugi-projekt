@@ -1,4 +1,4 @@
-package com.example.yourday.skontra.ui
+package skontra.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -32,8 +32,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.yourday.R
-import com.example.yourday.skontra.data.YourDay
-import com.example.yourday.skontra.domain.DeleteYourDayUseCase
+import skontra.data.YourDay
+import skontra.domain.DeleteYourDayUseCase
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date

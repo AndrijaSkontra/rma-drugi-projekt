@@ -1,4 +1,4 @@
-package com.example.yourday.skontra.data
+package skontra.data
 
 import android.content.Context
 import androidx.room.Database

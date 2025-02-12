@@ -1,4 +1,4 @@
-package com.example.yourday.skontra.ui
+package skontra.ui
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

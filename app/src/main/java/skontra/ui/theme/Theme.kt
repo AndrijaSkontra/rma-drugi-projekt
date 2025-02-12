@@ -1,4 +1,4 @@
-package com.example.yourday.skontra.ui.theme
+package skontra.ui.theme
 
 import android.app.Activity
 import android.os.Build

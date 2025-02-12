@@ -1,4 +1,4 @@
-package com.example.yourday.skontra.ui
+package skontra.ui
 
 import android.net.Uri
 import android.os.Build
@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
@@ -30,8 +32,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.yourday.skontra.data.YourDay
-import com.example.yourday.skontra.domain.UpdateYourDayUseCase
+import skontra.data.YourDay
+import skontra.domain.UpdateYourDayUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -62,11 +64,14 @@ fun YourDayUpdate(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
             .wrapContentSize(Alignment.Center)
+            .verticalScroll(scrollState)
     ) {
         NumberPickSlider(
             selectedNumber = productivityRating,

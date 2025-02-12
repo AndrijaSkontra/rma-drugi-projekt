@@ -1,10 +1,10 @@
-package com.example.yourday.skontra.domain
+package skontra.domain
 
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.yourday.skontra.data.YourDay
-import com.example.yourday.skontra.data.YourDaysRepository
+import skontra.data.YourDay
+import skontra.data.YourDaysRepository
 import javax.inject.Inject
 
 class GetAllYourDayUseCase @Inject constructor() {

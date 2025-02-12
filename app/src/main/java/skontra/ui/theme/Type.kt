@@ -1,4 +1,4 @@
-package com.example.yourday.skontra.ui.theme
+package skontra.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

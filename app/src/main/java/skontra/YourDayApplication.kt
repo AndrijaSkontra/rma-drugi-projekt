@@ -1,4 +1,4 @@
-package com.example.yourday
+package skontra
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

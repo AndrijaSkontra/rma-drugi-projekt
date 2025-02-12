@@ -1,4 +1,4 @@
-package com.example.yourday
+package skontra
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -26,17 +26,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import com.example.yourday.skontra.data.YourDay
-import com.example.yourday.skontra.domain.AddYourDayUseCase
-import com.example.yourday.skontra.domain.DeleteYourDayUseCase
-import com.example.yourday.skontra.domain.GetAllYourDayUseCase
-import com.example.yourday.skontra.domain.UpdateYourDayUseCase
-import com.example.yourday.skontra.ui.ScreenState
-import com.example.yourday.skontra.ui.YourDayAdd
-import com.example.yourday.skontra.ui.YourDayDetails
-import com.example.yourday.skontra.ui.YourDayUpdate
-import com.example.yourday.skontra.ui.YourDaysList
-import com.example.yourday.skontra.ui.theme.YourdayTheme
+import skontra.data.YourDay
+import skontra.domain.AddYourDayUseCase
+import skontra.domain.DeleteYourDayUseCase
+import skontra.domain.GetAllYourDayUseCase
+import skontra.domain.UpdateYourDayUseCase
+import skontra.ui.ScreenState
+import skontra.ui.YourDayAdd
+import skontra.ui.YourDayDetails
+import skontra.ui.YourDayUpdate
+import skontra.ui.YourDaysList
+import skontra.ui.theme.YourdayTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
